@@ -16,7 +16,7 @@ export default function CheckAuth() {
   // TODO: move to /chat or whatever
   return (
     <div>
-      <h3>Welcome, {user.name}</h3>
+      <h3>Welcome, {user.username}</h3>
       <pre>{JSON.stringify(user, null, 2)}</pre>
     </div>
   );
