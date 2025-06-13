@@ -1,5 +1,7 @@
+import { PuterUserProvider } from "~/hooks/usePuterUser";
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+// import { Welcome } from "../welcome/welcome";
+import CheckAuth from "~/components/check-auth";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,5 +11,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <PuterUserProvider>
+      <CheckAuth />
+    </PuterUserProvider>
+  );
 }
