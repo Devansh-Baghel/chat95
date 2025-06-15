@@ -22,7 +22,9 @@ app.use(pinoHttp());
 
 // Routes
 import userRouter from "./routes/user.routes";
+import chatRouter from "./routes/chat.routes";
 
 app.use("/api/users", userRouter);
+app.use("/api/chat", chatRouter);
 
 export default app;

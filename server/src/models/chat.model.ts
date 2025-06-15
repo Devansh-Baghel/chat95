@@ -8,6 +8,7 @@ interface Message {
 
 export interface ChatTypes extends Document {
   _id: string;
+  uuid: string;
   madeBy: string;
   title: string;
   messages: Message[];
@@ -18,12 +19,16 @@ const chatSchema: Schema<ChatTypes> = new Schema(
     madeBy: {
       type: String,
       required: [true, "Madeby is required"],
-      unique: true,
     },
     title: {
       type: String,
       required: [true, "Title is required"],
       trim: true,
+    },
+    uuid: {
+      type: String,
+      required: [true, "UUID is required"],
+      unique: true,
     },
     messages: [
       {

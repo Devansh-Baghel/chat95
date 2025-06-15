@@ -4,17 +4,19 @@ import { asyncHandler } from "../utils/asyncHandler";
 import { Chat } from "../models/chat.model";
 
 export const createNewChat = asyncHandler(async (req, res) => {
-  const { title, madeBy, question, answer } = req.body;
+  const { title, madeBy, question, answer, uuid } = req.body;
 
   if (!madeBy) throw new ApiError(400, "Madeby is required");
   if (!title) throw new ApiError(400, "Title is required");
   if (!question) throw new ApiError(400, "Question is required");
   if (!answer) throw new ApiError(400, "Answer is required");
+  if (!uuid) throw new ApiError(400, "UUID is required");
 
   const newChat = await Chat.create({
     madeBy,
     title,
     messages: [{ question, answer }],
+    uuid,
   });
 
   return res
