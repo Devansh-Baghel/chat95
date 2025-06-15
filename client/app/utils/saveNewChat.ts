@@ -7,6 +7,7 @@ interface SaveNewChatParams {
   answer: string;
   puter: any;
   chatId: string;
+  model: string;
 }
 
 export async function saveNewChat({
@@ -15,13 +16,14 @@ export async function saveNewChat({
   answer,
   puter,
   chatId,
+  model,
 }: SaveNewChatParams) {
   try {
     // Step 1: Generate a title using the AI
-    const titlePrompt = `Generate a short and relevant title for a conversation where the user asked: "${question}" and the assistant replied: "${answer}". Respond with just the title.`;
+    const titlePrompt = `Generate a short and relevant title for a conversation where the user asked: "${question}" and the assistant replied: "${answer}". Respond with just the title. do not add quotes around the title.`;
 
     const titleResponse = await puter.ai.chat(titlePrompt, {
-      model: "gpt-4o-mini",
+      model,
     });
 
     const title = titleResponse?.message?.content?.trim() || "Untitled Chat";
