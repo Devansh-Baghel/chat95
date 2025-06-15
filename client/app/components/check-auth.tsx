@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { usePuterUser } from "~/hooks/usePuterUser";
+import NewChat from "./new-chat";
 
 export default function CheckAuth() {
   const { user, isLoading, signInWithPuter } = usePuterUser();
@@ -17,7 +18,7 @@ export default function CheckAuth() {
   return (
     <div>
       <h3>Welcome, {user.username}</h3>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      <NewChat />
     </div>
   );
 }
