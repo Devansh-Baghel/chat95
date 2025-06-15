@@ -56,8 +56,10 @@ export default function ChatPage({ params }: Route.ComponentProps) {
           setResponse(fullResponse);
         } finally {
           setLoading(false);
+          console.log(user);
           const savedChat = await saveNewChat({
             madeBy: user.uuid,
+            chatId: params.chatId,
             question: newChatQuery,
             answer: fullResponse,
             puter,

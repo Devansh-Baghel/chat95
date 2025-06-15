@@ -6,6 +6,7 @@ interface SaveNewChatParams {
   question: string;
   answer: string;
   puter: any;
+  chatId: string;
 }
 
 export async function saveNewChat({
@@ -13,6 +14,7 @@ export async function saveNewChat({
   question,
   answer,
   puter,
+  chatId,
 }: SaveNewChatParams) {
   try {
     // Step 1: Generate a title using the AI
@@ -30,6 +32,7 @@ export async function saveNewChat({
       title,
       question,
       answer,
+      uuid: chatId,
     });
 
     return response.data; // contains ApiResponse

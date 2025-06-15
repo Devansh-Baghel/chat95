@@ -11,6 +11,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import axios from "axios";
+import { PuterUserProvider } from "./hooks/usePuterUser";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -46,11 +47,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   axios.defaults.baseURL = "http://localhost:8000";
   return (
-    <>
+    <PuterUserProvider>
       <NavLink to="/chat">Chat</NavLink>
       <NavLink to="/">Home</NavLink>
       <Outlet />
-    </>
+    </PuterUserProvider>
   );
 }
 

@@ -11,9 +11,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return (
-    <PuterUserProvider>
-      <CheckAuth />
-    </PuterUserProvider>
-  );
+  return <CheckAuth />;
 }
