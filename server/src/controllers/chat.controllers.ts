@@ -57,3 +57,15 @@ export const getChat = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, chat, "Chat found successfully"));
 });
+
+export const getAllChatTitles = asyncHandler(async (req, res) => {
+  const { madeBy } = req.body;
+
+  if (!madeBy) throw new ApiError(400, "Madeby is required");
+
+  const chats = await Chat.find({ madeBy }, { title: 1, uuid: 1 });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, chats, "Chat titles found successfully"));
+});
