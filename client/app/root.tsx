@@ -17,12 +17,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Frame } from "react95";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
-import original from "react95/dist/themes/original";
-import honey from "react95/dist/themes/honey";
-
 import ms_sans_serif from "react95/dist/fonts/ms_sans_serif.woff2";
 import ms_sans_serif_bold from "react95/dist/fonts/ms_sans_serif_bold.woff2";
 import TopBar from "./components/topbar";
+import { useThemeStore } from "./stores/themeStore";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -58,6 +56,8 @@ const GlobalStyles = createGlobalStyle`
 const queryClient = new QueryClient();
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { theme } = useThemeStore();
+
   return (
     <html lang="en">
       <head>
@@ -70,7 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <GlobalStyles />
         <PuterUserProvider>
           <QueryClientProvider client={queryClient}>
-            <ThemeProvider theme={original}>{children}</ThemeProvider>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
           </QueryClientProvider>
         </PuterUserProvider>
         <ScrollRestoration />

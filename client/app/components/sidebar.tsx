@@ -1,16 +1,7 @@
 import axios from "axios";
 import { usePuterUser } from "~/hooks/usePuterUser";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Button,
-  Frame,
-  GroupBox,
-  MenuList,
-  MenuListItem,
-  ScrollView,
-  Separator,
-} from "react95";
-import { useState } from "react";
+import { Button, GroupBox, MenuList, MenuListItem } from "react95";
 import { Link, NavLink } from "react-router";
 import { ScrollArea } from "./ui/scroll-area";
 
@@ -55,16 +46,16 @@ export default function SideBar() {
                 to={`/chat/${chat.uuid}`}
                 key={chat.uuid}
                 className="
-                  group flex justify-between items-center cursor-pointer!"
+                  group w-full justify-between items-center cursor-pointer!"
               >
                 <MenuListItem className="flex justify-between items-center w-full">
-                  <p className="truncate">
-                    {chat.title.length > 25
-                      ? `${chat.title.slice(0, 25)}...`
+                  <p className="truncate flex-1">
+                    {chat.title.length > 30
+                      ? `${chat.title.slice(0, 30)}...`
                       : chat.title}
                   </p>
                   <Button className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    Delete
+                    X
                   </Button>
                 </MenuListItem>
               </NavLink>
