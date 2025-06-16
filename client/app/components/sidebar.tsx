@@ -11,7 +11,8 @@ import {
   Separator,
 } from "react95";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
+import { ScrollArea } from "./ui/scroll-area";
 
 export type ChatTypes = {
   uuid: string;
@@ -40,33 +41,37 @@ export default function SideBar() {
 
   return (
     <section className="w-80 h-full flex flex-col gap-4">
-      <GroupBox label="New Chat" className="flex justify-center items-center">
-        <Link to="/" className="flex-1">
-          <Button className="w-full! h-10!">New Chat</Button>
-        </Link>
-      </GroupBox>
-      <GroupBox label="Sidebar" className="w-80">
-        <div className="h-full">
+      {/* <GroupBox label="New Chat" className="flex justify-center items-center"> */}
+      <Link to="/" className="flex-1">
+        <Button className="w-full! h-10!">New Chat</Button>
+      </Link>
+      {/* </GroupBox> */}
+      <GroupBox label="Chats" className="w-80">
+        <ScrollArea className="h-92">
           <MenuList className="hidden md:block">
             {/* <ScrollView> */}
             {chats.map((chat) => (
-              <MenuListItem
+              <NavLink
+                to={`/chat/${chat.uuid}`}
                 key={chat.uuid}
-                className="group flex justify-between items-center"
+                className="
+                  group flex justify-between items-center cursor-pointer!"
               >
-                <p className="truncate">
-                  {chat.title.length > 25
-                    ? `${chat.title.slice(0, 25)}...`
-                    : chat.title}
-                </p>
-                <Button className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  Delete
-                </Button>
-              </MenuListItem>
+                <MenuListItem className="flex justify-between items-center w-full">
+                  <p className="truncate">
+                    {chat.title.length > 25
+                      ? `${chat.title.slice(0, 25)}...`
+                      : chat.title}
+                  </p>
+                  <Button className="opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    Delete
+                  </Button>
+                </MenuListItem>
+              </NavLink>
             ))}
             {/* </ScrollView> */}
           </MenuList>
-        </div>
+        </ScrollArea>
       </GroupBox>
     </section>
   );

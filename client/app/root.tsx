@@ -70,7 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <GlobalStyles />
         <PuterUserProvider>
           <QueryClientProvider client={queryClient}>
-            <ThemeProvider theme={honey}>{children}</ThemeProvider>
+            <ThemeProvider theme={original}>{children}</ThemeProvider>
           </QueryClientProvider>
         </PuterUserProvider>
         <ScrollRestoration />

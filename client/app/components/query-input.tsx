@@ -7,6 +7,9 @@ import {
   SelectNative,
   TextInput,
   Tooltip,
+  Window,
+  WindowContent,
+  WindowHeader,
 } from "react95";
 import { v4 as uuidv4 } from "uuid";
 import { useModelStore, type Model } from "~/stores/modelStore";
@@ -72,49 +75,52 @@ export default function QueryInput() {
 
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="w-full">
-      <GroupBox
-        className="flex flex-col items-center gap-2"
-        label="Enter a question"
+      <Window
+        className="flex! flex-col w-full!"
+        // label="Enter a question"
       >
-        <TextInput
-          placeholder="Ask something..."
-          fullWidth
-          // multiline
-          rows={2}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          required
-        />
-        <div className="flex items-center justify-between w-full">
-          <SelectNative
-            options={modelOptions}
-            defaultValue={model}
-            onChange={(e) => setModel(e.value)}
-            aria-required
+        <WindowHeader className="window-title">Ask Something..</WindowHeader>
+        <WindowContent className="p-2! w-full!">
+          <TextInput
+            placeholder="Ask something..."
+            fullWidth
+            multiline
+            rows={2}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            required
           />
-          {query ? (
-            <Tooltip
-              text="Send message"
-              enterDelay={100}
-              leaveDelay={500}
-              position="left"
-            >
-              <Button type="submit">Ask</Button>
-            </Tooltip>
-          ) : (
-            <Tooltip
-              text="Enter text to send a message"
-              enterDelay={100}
-              leaveDelay={500}
-              position="left"
-            >
-              <Button disabled variant="flat" className="cursor-not-allowed">
-                Ask
-              </Button>
-            </Tooltip>
-          )}
-        </div>
-      </GroupBox>
+          <div className="flex items-center justify-between w-full">
+            <SelectNative
+              options={modelOptions}
+              defaultValue={model}
+              onChange={(e) => setModel(e.value)}
+              aria-required
+            />
+            {query ? (
+              <Tooltip
+                text="Send message"
+                enterDelay={100}
+                leaveDelay={500}
+                position="left"
+              >
+                <Button type="submit">Ask</Button>
+              </Tooltip>
+            ) : (
+              <Tooltip
+                text="Enter text to send a message"
+                enterDelay={100}
+                leaveDelay={500}
+                position="left"
+              >
+                <Button disabled variant="flat" className="cursor-not-allowed">
+                  Ask
+                </Button>
+              </Tooltip>
+            )}
+          </div>
+        </WindowContent>
+      </Window>
     </form>
   );
 }

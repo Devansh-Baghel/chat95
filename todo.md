@@ -1,3 +1,4 @@
 - [ ] add a way to change themes
 - [ ] add select model option
 - [ ] add error message to tell user when they submit an empty query
+- [ ] add document titles on all pages
