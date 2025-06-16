@@ -1,4 +1,9 @@
-- [ ] add a way to change themes
-- [ ] add select model option
-- [ ] add error message to tell user when they submit an empty query
+- [x] add a way to change themes
+- [x] add select model option
+- [x] add error message to tell user when they submit an empty query
 - [ ] add document titles on all pages
+- [ ] delete chat feature
+- [ ] branch off conversation feature
+- [ ] add auto animate
+- [ ] add feature to display the chat history like "Today" "Yesterday" "Last 7 days" etc
+- [ ] change to a better default model when released

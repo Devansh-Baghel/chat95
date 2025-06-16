@@ -63,11 +63,11 @@ export const getAllChatTitles = asyncHandler(async (req, res) => {
 
   if (!madeBy) throw new ApiError(400, "Madeby is required");
 
-  const chats = await Chat.find({ madeBy }, { title: 1, uuid: 1 });
+  const chats = await Chat.find({ madeBy }, { title: 1, uuid: 1 }).sort({
+    updatedAt: -1,
+  });
 
   return res
     .status(200)
-    .json(
-      new ApiResponse(200, chats.reverse(), "Chat titles found successfully")
-    );
+    .json(new ApiResponse(200, chats, "Chat titles found successfully"));
 });

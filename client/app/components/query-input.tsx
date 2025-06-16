@@ -44,7 +44,7 @@ export default function QueryInput() {
             onChange={(e) => setQuery(e.target.value)}
             required
           />
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full mt-2">
             <SelectNative
               options={modelOptions}
               defaultValue={model}

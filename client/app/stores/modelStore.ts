@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type Model =
   | "gpt-4o-mini"
@@ -35,7 +36,12 @@ interface ModelStore {
   setModel: (model: Model) => void;
 }
 
-export const useModelStore = create<ModelStore>((set) => ({
-  model: "gemini-1.5-flash",
-  setModel: (model) => set({ model }),
-}));
+export const useModelStore = create<ModelStore>()(
+  persist(
+    (set) => ({
+      model: "gemini-1.5-flash",
+      setModel: (model) => set({ model }),
+    }),
+    { name: "model-store" }
+  )
+);

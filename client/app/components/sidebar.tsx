@@ -40,7 +40,6 @@ export default function SideBar() {
       <GroupBox label="Chats" className="w-80">
         <ScrollArea className="h-92">
           <MenuList className="hidden md:block">
-            {/* <ScrollView> */}
             {chats.map((chat) => (
               <NavLink
                 to={`/chat/${chat.uuid}`}
@@ -60,7 +59,6 @@ export default function SideBar() {
                 </MenuListItem>
               </NavLink>
             ))}
-            {/* </ScrollView> */}
           </MenuList>
         </ScrollArea>
       </GroupBox>

@@ -21,6 +21,7 @@ import ms_sans_serif from "react95/dist/fonts/ms_sans_serif.woff2";
 import ms_sans_serif_bold from "react95/dist/fonts/ms_sans_serif_bold.woff2";
 import TopBar from "./components/topbar";
 import { useThemeStore } from "./stores/themeStore";
+import logo from "@react95/icons/svg/Logo_32x32_4.svg";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -63,6 +64,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/svg" href={logo} />
         <Meta />
         <Links />
       </head>
