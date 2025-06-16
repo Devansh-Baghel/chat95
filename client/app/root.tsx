@@ -14,13 +14,15 @@ import axios from "axios";
 import { PuterUserProvider, usePuterUser } from "./hooks/usePuterUser";
 import SideBar from "./components/sidebar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Frame, styleReset } from "react95";
+import { Frame } from "react95";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
 import original from "react95/dist/themes/original";
+import honey from "react95/dist/themes/honey";
 
 import ms_sans_serif from "react95/dist/fonts/ms_sans_serif.woff2";
 import ms_sans_serif_bold from "react95/dist/fonts/ms_sans_serif_bold.woff2";
+import TopBar from "./components/topbar";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -36,7 +38,6 @@ export const links: Route.LinksFunction = () => [
 ];
 
 const GlobalStyles = createGlobalStyle`
-  ${styleReset}
   @font-face {
     font-family: 'ms_sans_serif';
     src: url('${ms_sans_serif}') format('woff2');
@@ -69,11 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <GlobalStyles />
         <PuterUserProvider>
           <QueryClientProvider client={queryClient}>
-            <ThemeProvider theme={original}>
-              <Frame variant="outside" shadow className="min-h-screen w-full">
-                {children}
-              </Frame>
-            </ThemeProvider>
+            <ThemeProvider theme={honey}>{children}</ThemeProvider>
           </QueryClientProvider>
         </PuterUserProvider>
         <ScrollRestoration />
@@ -88,6 +85,7 @@ export default function App() {
 
   const { user, isLoading, signInWithPuter } = usePuterUser();
 
+  // Loading Progress Bar
   if (isLoading) return "Loading...";
 
   if (!user)
@@ -98,12 +96,16 @@ export default function App() {
     );
 
   return (
-    <>
-      <SideBar />
-      <NavLink to="/chat">Chat</NavLink>
-      <NavLink to="/">Home</NavLink>
-      <Outlet />
-    </>
+    <Frame
+      variant="outside"
+      className="min-h-screen w-full p-4 relative flex! flex-col gap-4"
+    >
+      <TopBar />
+      <div className="flex flex-1 overflow-hidden! gap-4">
+        <SideBar />
+        <Outlet />
+      </div>
+    </Frame>
   );
 }
 

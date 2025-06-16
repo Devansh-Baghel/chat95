@@ -67,5 +67,7 @@ export const getAllChatTitles = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, chats, "Chat titles found successfully"));
+    .json(
+      new ApiResponse(200, chats.reverse(), "Chat titles found successfully")
+    );
 });

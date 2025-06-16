@@ -1,4 +1,3 @@
-// provides type safety/inference
 import { useSearchParams } from "react-router";
 import type { Route } from "./+types/chat";
 import usePuter from "~/hooks/usePuter";
@@ -6,14 +5,6 @@ import { usePuterUser } from "~/hooks/usePuterUser";
 import { useContext, useEffect, useState } from "react";
 import { saveNewChat } from "~/utils/saveNewChat";
 import { useModelStore } from "~/stores/modelStore";
-
-// // provides `loaderData` to the component
-// export async function loader({ params }: Route.LoaderArgs) {}
-
-// export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-//   const [searchParams] = useSearchParams();
-//   const query = searchParams.get("query");
-// }
 
 export default function ChatPage({ params }: Route.ComponentProps) {
   const [searchParams] = useSearchParams();
@@ -24,9 +15,6 @@ export default function ChatPage({ params }: Route.ComponentProps) {
   const { user } = usePuterUser();
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
-
-  //   if query is there make a request to llm as soon as the component loads
-  //   else show the previous chat history
 
   useEffect(() => {
     const fetchData = async () => {
