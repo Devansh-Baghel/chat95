@@ -39,7 +39,7 @@ interface ModelStore {
 export const useModelStore = create<ModelStore>()(
   persist(
     (set) => ({
-      model: "gemini-1.5-flash",
+      model: "gpt-4o-mini",
       setModel: (model) => set({ model }),
     }),
     { name: "model-store" }
