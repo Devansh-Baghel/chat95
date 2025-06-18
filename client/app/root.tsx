@@ -91,7 +91,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function App() {
-  axios.defaults.baseURL = "http://localhost:8000";
+  axios.defaults.baseURL = "https://chat95-f2e6x.ondigitalocean.app";
 
   const { user, isLoading } = usePuterUser();
   const { isOpen } = useSidebarStore();
