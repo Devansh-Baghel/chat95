@@ -84,7 +84,7 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
           const stream = await puter.ai.chat(newChatQuery, {
             stream: true,
             model,
-            testMode: true,
+            testMode: false,
           });
 
           for await (const chunk of stream) {

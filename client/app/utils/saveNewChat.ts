@@ -24,7 +24,7 @@ export async function saveNewChat({
 
     const titleResponse = await puter.ai.chat(titlePrompt, {
       model,
-      testMode: true,
+      testMode: false,
     });
 
     const title = titleResponse?.message?.content?.trim() || "Untitled Chat";
