@@ -1,20 +1,20 @@
 - [x] add a way to change themes
 - [x] add select model option
 - [x] add error message to tell user when they submit an empty query
-- [ ] add document titles on all pages
-- [ ] delete chat feature
+- [x] add document titles on all pages
+- [x] delete chat feature
 - [ ] branch off conversation feature
 - [ ] add auto animate
 - [ ] add feature to display the chat history like "Today" "Yesterday" "Last 7 days" etc
 - [ ] change to a better default model when released
-- [ ] markdown formatter for ai response
+- [x] markdown formatter for ai response
 - [ ] "Ask primeagen opion" feature
 - [ ] read out feature for primeagen
 - [ ] windows 95 sound effects if possible
 - [ ] option to share a chat with others
 - [ ] better global loading component
 - [ ] better check auth page
-- [ ] fix open/close sidebar button overlay on chat text
+- [x] fix open/close sidebar button overlay on chat text
 - [ ] add little settings option to toggle topbar
 - [ ] copy message feature
 - [ ]

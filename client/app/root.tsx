@@ -22,6 +22,7 @@ import TopBar from "./components/topbar";
 import { useThemeStore } from "./stores/themeStore";
 import logo from "@react95/icons/svg/Logo_32x32_4.svg";
 import { useSidebarStore } from "./stores/sidebarStore";
+import WelcomePage from "./components/welcome";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -82,21 +83,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Chat95" },
+    { name: "Chat95", content: "Welcome to Chat95!" },
+  ];
+}
+
 export default function App() {
   axios.defaults.baseURL = "http://localhost:8000";
 
-  const { user, isLoading, signInWithPuter } = usePuterUser();
+  const { user, isLoading } = usePuterUser();
   const { isOpen } = useSidebarStore();
 
   // Loading Progress Bar
   if (isLoading) return "Loading...";
 
-  if (!user)
-    return (
-      <button className="p-4 bg-blue-400" onClick={signInWithPuter}>
-        Authborize with Puter
-      </button>
-    );
+  if (!user) return <WelcomePage />;
 
   return (
     <Frame

@@ -54,36 +54,42 @@ export default function SideBar() {
         <Button className="w-full! h-10!">New Chat</Button>
       </Link>
 
-      <GroupBox label="Chats" className="w-80">
-        <ScrollArea className="h-92">
-          <MenuList className="hidden md:block w-full!">
-            {chats.map((chat) => (
-              <NavLink
-                to={`/chat/${chat.uuid}`}
-                key={chat.uuid}
-                className="group w-full justify-between items-center cursor-pointer!"
-              >
-                <MenuListItem className="flex justify-between items-center w-full!">
-                  <p className="truncate flex-1">
-                    {chat.title.length > 30
-                      ? `${chat.title.slice(0, 30)}...`
-                      : chat.title}
-                  </p>
-                  <Button
-                    className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                    onClick={(e) => {
-                      e.preventDefault(); // prevent nav on delete
-                      deleteMutation.mutate(chat.uuid);
-                    }}
-                  >
-                    X
-                  </Button>
-                </MenuListItem>
-              </NavLink>
-            ))}
-          </MenuList>
-        </ScrollArea>
-      </GroupBox>
+      {chats.length === 0 ? (
+        <GroupBox label="Chats" className="w-80">
+          No Chats
+        </GroupBox>
+      ) : (
+        <GroupBox label="Chats" className="w-80">
+          <ScrollArea className="h-92">
+            <MenuList className="hidden md:block w-full!">
+              {chats.map((chat) => (
+                <NavLink
+                  to={`/chat/${chat.uuid}`}
+                  key={chat.uuid}
+                  className="group w-full justify-between items-center cursor-pointer!"
+                >
+                  <MenuListItem className="flex justify-between items-center w-full! cursor-pointer!">
+                    <p className="truncate flex-1">
+                      {chat.title.length > 30
+                        ? `${chat.title.slice(0, 30)}...`
+                        : chat.title}
+                    </p>
+                    <Button
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      onClick={(e) => {
+                        e.preventDefault(); // prevent nav on delete
+                        deleteMutation.mutate(chat.uuid);
+                      }}
+                    >
+                      X
+                    </Button>
+                  </MenuListItem>
+                </NavLink>
+              ))}
+            </MenuList>
+          </ScrollArea>
+        </GroupBox>
+      )}
     </section>
   );
 }
