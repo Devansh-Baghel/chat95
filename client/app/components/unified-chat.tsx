@@ -108,6 +108,8 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
             messages: [{ question: newChatQuery, answer: fullResponse }],
           });
 
+          queryClient.invalidateQueries(["sidebar-chats"]);
+
           setHasProcessedNewQuery(true);
           setIsNewChat(false);
           setStreamingAnswer("");

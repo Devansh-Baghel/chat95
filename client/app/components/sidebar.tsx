@@ -55,7 +55,7 @@ export default function SideBar() {
       </Link>
 
       {chats.length === 0 ? (
-        <GroupBox label="Chats" className="w-80">
+        <GroupBox label="Chats" className="w-80 h-92">
           No Chats
         </GroupBox>
       ) : (
@@ -90,6 +90,17 @@ export default function SideBar() {
           </ScrollArea>
         </GroupBox>
       )}
+
+      <p className="text-lg  text-center mt-10">
+        made by{" "}
+        <a
+          href="https://baghel.dev"
+          target="_blank"
+          className="underline text-blue-800"
+        >
+          baghel.dev
+        </a>
+      </p>
     </section>
   );
 }
