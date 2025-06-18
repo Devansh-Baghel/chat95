@@ -2,7 +2,6 @@ import {
   isRouteErrorResponse,
   Links,
   Meta,
-  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -22,6 +21,7 @@ import ms_sans_serif_bold from "react95/dist/fonts/ms_sans_serif_bold.woff2";
 import TopBar from "./components/topbar";
 import { useThemeStore } from "./stores/themeStore";
 import logo from "@react95/icons/svg/Logo_32x32_4.svg";
+import { useSidebarStore } from "./stores/sidebarStore";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -54,7 +54,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { theme } = useThemeStore();
@@ -86,6 +86,7 @@ export default function App() {
   axios.defaults.baseURL = "http://localhost:8000";
 
   const { user, isLoading, signInWithPuter } = usePuterUser();
+  const { isOpen } = useSidebarStore();
 
   // Loading Progress Bar
   if (isLoading) return "Loading...";
@@ -100,11 +101,12 @@ export default function App() {
   return (
     <Frame
       variant="outside"
-      className="min-h-screen w-full p-4 relative flex! flex-col gap-4"
+      className="min-h-screen w-full p-3 flex! flex-col gap-3"
     >
+      {/* {isOpen && <TopBar />} */}
       <TopBar />
       <div className="flex flex-1 overflow-hidden! gap-4">
-        <SideBar />
+        {isOpen && <SideBar />}
         <Outlet />
       </div>
     </Frame>

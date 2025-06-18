@@ -25,13 +25,13 @@ export const createNewChat = asyncHandler(async (req, res) => {
 });
 
 export const addMessageToChat = asyncHandler(async (req, res) => {
-  const { chatId, question, answer } = req.body;
+  const { uuid, question, answer } = req.body;
 
-  if (!chatId) throw new ApiError(400, "Chat id is required");
+  if (!uuid) throw new ApiError(400, "Chat id is required");
   if (!question) throw new ApiError(400, "Question is required");
   if (!answer) throw new ApiError(400, "Answer is required");
 
-  const chat = await Chat.findById(chatId);
+  const chat = await Chat.findOne({ uuid });
 
   if (!chat) throw new ApiError(404, "Chat not found");
 
@@ -45,11 +45,11 @@ export const addMessageToChat = asyncHandler(async (req, res) => {
 });
 
 export const getChat = asyncHandler(async (req, res) => {
-  const { chatId } = req.body;
+  const { uuid } = req.body;
 
-  if (!chatId) throw new ApiError(400, "Chat id is required");
+  if (!uuid) throw new ApiError(400, "uuid is required");
 
-  const chat = await Chat.findById(chatId);
+  const chat = await Chat.findOne({ uuid });
 
   if (!chat) throw new ApiError(404, "Chat not found");
 
@@ -70,4 +70,18 @@ export const getAllChatTitles = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, chats, "Chat titles found successfully"));
+});
+
+export const deleteChat = asyncHandler(async (req, res) => {
+  const { uuid } = req.body;
+
+  if (!uuid) throw new ApiError(400, "uuid is required");
+
+  const chat = await Chat.findOneAndDelete({ uuid });
+
+  if (!chat) throw new ApiError(404, "Chat not found");
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, chat, "Chat deleted successfully"));
 });

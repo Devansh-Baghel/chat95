@@ -1,6 +1,7 @@
 import QueryInput from "~/components/query-input";
 import type { Route } from "./+types/home";
 import { Frame } from "react95";
+// import Markdown from 'markdown-to-jsx'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -13,7 +14,9 @@ export default function Home() {
   return (
     <main className="flex flex-col gap-2 w-full">
       {/* Welecome text / getting started / things to ask chat95 */}
-      <Frame variant="field" className="flex-1!"></Frame>
+      <Frame variant="field" className="flex-1!">
+        {/* <Markdown></Markdown> */}
+      </Frame>
 
       <QueryInput />
     </main>
