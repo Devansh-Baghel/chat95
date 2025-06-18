@@ -23,6 +23,7 @@ import { useThemeStore } from "./stores/themeStore";
 import logo from "@react95/icons/svg/Logo_32x32_4.svg";
 import { useSidebarStore } from "./stores/sidebarStore";
 import WelcomePage from "./components/welcome";
+import LoadingPage from "./components/loading";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -91,13 +92,13 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function App() {
-  axios.defaults.baseURL = "https://chat95-f2e6x.ondigitalocean.app";
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const { user, isLoading } = usePuterUser();
   const { isOpen } = useSidebarStore();
 
   // Loading Progress Bar
-  if (isLoading) return "Loading...";
+  if (isLoading) return <LoadingPage />;
 
   if (!user) return <WelcomePage />;
 

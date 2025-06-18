@@ -23,6 +23,7 @@ import { saveNewChat } from "../utils/saveNewChat";
 import { useSearchParams } from "react-router";
 import leftIcon from "@react95/icons/svg/ArrowLeft_32x32_4.svg";
 import rightIcon from "@react95/icons/svg/ArrowRight_32x32_4.svg";
+import LoadingSection from "~/components/loading-section";
 
 type Message = { role: string; content: string };
 type ChatMessage = { question: string; answer: string };
@@ -182,7 +183,24 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
     }
   }, [chat?.messages, streamingAnswer]);
 
-  if (isLoading && !isNewChat) return "Loading...";
+  if (isLoading && !isNewChat)
+    return (
+      <section className="flex-1 flex flex-col gap-4">
+        <Frame
+          variant="field"
+          className="flex-1! flex! items-center justify-center"
+        >
+          <Button
+            className="absolute! z-50 top-4 left-4"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <img src={isOpen ? leftIcon : rightIcon} alt="" />
+          </Button>
+
+          <LoadingSection />
+        </Frame>
+      </section>
+    );
   if (error && !isNewChat) return "Error loading chat";
 
   const allMessages = [
@@ -244,6 +262,15 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
               disabled={
                 sendMessage.isPending || (isNewChat && !hasProcessedNewQuery)
               }
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault(); // prevent newline
+                  const form = e.currentTarget.form;
+                  if (form) {
+                    form.requestSubmit(); // triggers onSubmit of the form
+                  }
+                }
+              }}
               required
             />
             <div className="flex items-center justify-between w-full mt-2">

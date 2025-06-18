@@ -42,8 +42,18 @@ export default function QueryInput() {
             rows={2}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault(); // prevent newline
+                const form = e.currentTarget.form;
+                if (form) {
+                  form.requestSubmit(); // triggers onSubmit of the form
+                }
+              }
+            }}
             required
           />
+
           <div className="flex items-center justify-between w-full mt-2">
             <SelectNative
               options={modelOptions}
