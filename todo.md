@@ -6,15 +6,14 @@
 - [ ] branch off conversation feature
 - [ ] add auto animate
 - [ ] add feature to display the chat history like "Today" "Yesterday" "Last 7 days" etc
-- [ ] change to a better default model when released
+- [x] change to a better default model when released
 - [x] markdown formatter for ai response
 - [ ] "Ask primeagen opion" feature
 - [ ] read out feature for primeagen
 - [ ] windows 95 sound effects if possible
 - [ ] option to share a chat with others
-- [ ] better global loading component
-- [ ] better check auth page
+- [x] better global loading component
+- [x] better check auth page
 - [x] fix open/close sidebar button overlay on chat text
 - [ ] add little settings option to toggle topbar
 - [ ] copy message feature
-- [ ]

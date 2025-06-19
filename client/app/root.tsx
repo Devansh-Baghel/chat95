@@ -24,6 +24,7 @@ import logo from "@react95/icons/svg/Logo_32x32_4.svg";
 import { useSidebarStore } from "./stores/sidebarStore";
 import WelcomePage from "./components/welcome";
 import LoadingPage from "./components/loading";
+import { Toaster } from "react-hot-toast";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -113,6 +114,7 @@ export default function App() {
         {isOpen && <SideBar />}
         <Outlet />
       </div>
+      <Toaster />
     </Frame>
   );
 }

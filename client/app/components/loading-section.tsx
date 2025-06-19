@@ -1,7 +1,7 @@
 import React from "react";
 import { Hourglass, Monitor } from "react95";
 
-export default function LoadingSection() {
+export default function LoadingSection({ image }: { image?: boolean }) {
   return (
     <Monitor
       backgroundStyles={{
@@ -12,7 +12,15 @@ export default function LoadingSection() {
       }}
     >
       <Hourglass className="size-10!" />
-      <span className="text-2xl">Loading...</span>
+      {/* <span className="text-2xl">
+        {image ? "Generating image..." : "Loading..."}
+      </span> */}
+
+      {image ? (
+        <span className="text-xl">Generating image...</span>
+      ) : (
+        <span className="text-2xl">Loading...</span>
+      )}
     </Monitor>
   );
 }

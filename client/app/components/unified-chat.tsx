@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   Frame,
   SelectNative,
   TextInput,
@@ -24,6 +25,8 @@ import { useSearchParams } from "react-router";
 import leftIcon from "@react95/icons/svg/ArrowLeft_32x32_4.svg";
 import rightIcon from "@react95/icons/svg/ArrowRight_32x32_4.svg";
 import LoadingSection from "~/components/loading-section";
+import toast from "react-hot-toast";
+import PrimeagenOpinion from "./prime";
 
 type Message = { role: string; content: string };
 type ChatMessage = { question: string; answer: string };
@@ -49,6 +52,9 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
   const [isNewChat, setIsNewChat] = useState(!!newChatQuery);
   const [hasProcessedNewQuery, setHasProcessedNewQuery] = useState(false);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [generateImageMode, setGenerateImageMode] = useState(false);
 
   // Fetch existing chat data
   const {
@@ -84,7 +90,7 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
           const stream = await puter.ai.chat(newChatQuery, {
             stream: true,
             model,
-            testMode: false,
+            testMode: true,
           });
 
           for await (const chunk of stream) {
@@ -212,6 +218,42 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
       : []),
   ];
 
+  const handleGenerateImage = async () => {
+    if (!puter || !query.trim()) return;
+
+    setGeneratedImage(null);
+    setIsGeneratingImage(true);
+
+    try {
+      const img = await puter.ai.txt2img(query, true);
+      setGeneratedImage(img.src);
+
+      // Save the generated image as a message in DB
+      const { data } = await axios.post("/api/chat/add-message", {
+        uuid: chatId,
+        question: query,
+        answer: `![Generated Image](${img.src})`,
+      });
+
+      // Update the chat cache
+      queryClient.setQueryData([chatId], (old: any) => ({
+        ...old,
+        messages: [...(old?.messages || []), data.data.messages.at(-1)],
+      }));
+
+      // Clear input
+      setQuery("");
+    } catch (err) {
+      console.error("Image generation failed:", err);
+      setGeneratedImage(null);
+      toast.error(
+        "You've hit your free-tier limit on Puter AI. Upgrade at https://puter.com"
+      );
+    } finally {
+      setIsGeneratingImage(false);
+    }
+  };
+
   return (
     <section className="flex-1 flex flex-col gap-4">
       <Frame variant="field" className="flex-1!">
@@ -234,20 +276,53 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
                   {message.question}
                 </Frame>
                 <div className="px-10 py-6">
-                  <MarkdownEditor content={message.answer} />
+                  {message.answer.startsWith("![Generated Image](") ? (
+                    <img
+                      src={message.answer.match(/\((.*?)\)/)?.[1] || ""}
+                      alt="Generated"
+                      className="rounded-lg border shadow-md max-w-96 h-auto"
+                    />
+                  ) : (
+                    <div>
+                      <MarkdownEditor content={message.answer} />
+                      <PrimeagenOpinion content={message.answer} />
+                    </div>
+                  )}
                 </div>
               </div>
             ))
           )}
+
+          {isGeneratingImage && (
+            // <div className="text-center text-gray-500 py-4">
+            //   🖼️ Generating image...
+            // </div>
+            <LoadingSection image />
+          )}
+
+          {generatedImage && (
+            <div className="flex mx-10 my-4 max-w-96 h-auto">
+              <img
+                src={generatedImage}
+                alt="Generated"
+                className="rounded-lg border shadow-md max-w-full h-auto"
+              />
+            </div>
+          )}
+
           <div ref={bottomRef} />
         </ScrollArea>
       </Frame>
 
       <form
         className="w-full"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          if (query.trim() && !sendMessage.isPending) {
+          if (!query.trim()) return;
+
+          if (generateImageMode) {
+            await handleGenerateImage(); // generate image instead of sending message
+          } else if (!sendMessage.isPending) {
             sendMessage.mutate(query);
           }
         }}
@@ -276,38 +351,58 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
               required
             />
             <div className="flex items-center justify-between w-full mt-2">
-              <SelectNative
-                options={modelOptions}
-                defaultValue={model}
-                onChange={(e) => setModel(e.value)}
-                disabled={
-                  sendMessage.isPending || (isNewChat && !hasProcessedNewQuery)
-                }
-                aria-required
-              />
-              {query ? (
-                <Tooltip text="Send message" position="left">
+              {!generateImageMode ? (
+                <SelectNative
+                  options={modelOptions}
+                  defaultValue={model}
+                  onChange={(e) => setModel(e.value)}
+                  disabled={
+                    sendMessage.isPending ||
+                    (isNewChat && !hasProcessedNewQuery)
+                  }
+                  aria-required
+                />
+              ) : (
+                <div className="text-sm text-gray-700 px-2 py-1 italic">
+                  Using DALL·E 3 (image generation)
+                </div>
+              )}
+
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  checked={generateImageMode}
+                  variant="flat"
+                  name="Generate-Image"
+                  label={"Generate Image"}
+                  value={"Generate-Image"}
+                  onChange={(e) => setGenerateImageMode(e.target.checked)}
+                />
+                <Tooltip
+                  text={
+                    generateImageMode
+                      ? "Generate an image using DALL·E 3"
+                      : "Send message"
+                  }
+                  position="left"
+                >
                   <Button
                     type="submit"
                     disabled={
-                      sendMessage.isPending ||
+                      (generateImageMode && isGeneratingImage) ||
+                      (!generateImageMode && sendMessage.isPending) ||
                       (isNewChat && !hasProcessedNewQuery)
                     }
                   >
-                    {sendMessage.isPending ? "Sending..." : "Ask"}
+                    {generateImageMode
+                      ? isGeneratingImage
+                        ? "Generating..."
+                        : "🎨 Generate"
+                      : sendMessage.isPending
+                      ? "Sending..."
+                      : "Ask"}
                   </Button>
                 </Tooltip>
-              ) : (
-                <Tooltip text="Enter text to send a message" position="left">
-                  <Button
-                    disabled
-                    variant="flat"
-                    className="cursor-not-allowed"
-                  >
-                    Ask
-                  </Button>
-                </Tooltip>
-              )}
+              </div>
             </div>
           </WindowContent>
         </Window>
