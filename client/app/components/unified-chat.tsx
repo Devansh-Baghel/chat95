@@ -27,6 +27,7 @@ import rightIcon from "@react95/icons/svg/ArrowRight_32x32_4.svg";
 import LoadingSection from "~/components/loading-section";
 import toast from "react-hot-toast";
 import PrimeagenOpinion from "./prime";
+import MarkdownWithCopy from "./new-markdown";
 
 type Message = { role: string; content: string };
 type ChatMessage = { question: string; answer: string };
@@ -284,8 +285,10 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
                     />
                   ) : (
                     <div>
-                      <MarkdownEditor content={message.answer} />
-                      <PrimeagenOpinion content={message.answer} />
+                      <MarkdownWithCopy content={message.answer} />
+                      {!(streamingQuestion === message.question) && (
+                        <PrimeagenOpinion content={message.answer} />
+                      )}
                     </div>
                   )}
                 </div>
