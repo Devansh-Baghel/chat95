@@ -10,12 +10,11 @@ import {
   WindowHeader,
 } from "react95";
 import axios from "axios";
-import MarkdownEditor from "./markdown";
 import { ScrollArea } from "./ui/scroll-area";
 import { modelOptions } from "../utils/models";
 import { useModelStore } from "../stores/modelStore";
 import { useEffect, useRef, useState } from "react";
-import { useSidebarStore } from "../stores/sidebarStore";
+import { useAppViewStore } from "../stores/sidebarStore";
 import usePuter from "../hooks/usePuter";
 import { usePuterUser } from "../hooks/usePuterUser";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -44,7 +43,7 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
   const newChatQuery = searchParams.get("query");
 
   const { model, setModel } = useModelStore();
-  const { isOpen, setIsOpen } = useSidebarStore();
+  const { showSidebar, setShowSidebar, showTopbar } = useAppViewStore();
   const puter = usePuter();
   const { user } = usePuterUser();
   const [query, setQuery] = useState("");
@@ -115,7 +114,16 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
             messages: [{ question: newChatQuery, answer: fullResponse }],
           });
 
-          queryClient.invalidateQueries(["sidebar-chats"]);
+          // sidebarRefetch();
+
+          // queryClient.setQueryData(["sidebar-chats"], {
+          //   data: [
+          //     ...(queryClient.getQueryData(["sidebar-chats"])?.data || []),
+          //     savedChat,
+          //   ],
+          // });
+
+          // console.log("refetching", sidebarRefetch, savedChat);
 
           setHasProcessedNewQuery(true);
           setIsNewChat(false);
@@ -201,9 +209,9 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
         >
           <Button
             className="absolute! z-50 top-4 left-4"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setShowSidebar(!showSidebar)}
           >
-            <img src={isOpen ? leftIcon : rightIcon} alt="" />
+            <img src={showSidebar ? leftIcon : rightIcon} alt="" />
           </Button>
 
           <LoadingSection />
@@ -260,12 +268,16 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
       <Frame variant="field" className="flex-1!">
         <Button
           className="absolute! z-50 top-4 left-4"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setShowSidebar(!showSidebar)}
         >
-          <img src={isOpen ? leftIcon : rightIcon} alt="" />
+          <img src={showSidebar ? leftIcon : rightIcon} alt="" />
         </Button>
 
-        <ScrollArea className="h-[60vh] px-10 py-4 overflow-auto">
+        <ScrollArea
+          className={`${
+            showTopbar ? "h-[60vh]" : "h-[71vh]"
+          } px-10 py-4 overflow-auto`}
+        >
           {allMessages.length === 0 && !streamingQuestion ? (
             <div className="flex items-center justify-center h-full text-gray-500">
               Start a conversation...
@@ -285,7 +297,9 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
                     />
                   ) : (
                     <div>
-                      <MarkdownWithCopy content={message.answer} />
+                      <div className="font-sans!">
+                        <MarkdownWithCopy content={message.answer} />
+                      </div>
                       {!(streamingQuestion === message.question) && (
                         <PrimeagenOpinion content={message.answer} />
                       )}

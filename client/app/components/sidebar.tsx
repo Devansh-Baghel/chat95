@@ -1,10 +1,14 @@
 import axios from "axios";
 import { usePuterUser } from "~/hooks/usePuterUser";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Button, GroupBox, MenuList, MenuListItem } from "react95";
+import { AppBar, Button, GroupBox, MenuList, MenuListItem } from "react95";
 import { Link, NavLink, useNavigate } from "react-router";
 import { ScrollArea } from "./ui/scroll-area";
 import { useLocation } from "react-router";
+import { useAppViewStore } from "~/stores/sidebarStore";
+import logo from "@react95/icons/svg/Logo_32x32_4.svg";
+import ChangeTheme from "./change-theme";
+import Settings from "./settings";
 
 export type ChatTypes = {
   uuid: string;
@@ -16,6 +20,7 @@ export default function SideBar() {
   const { user } = usePuterUser();
   const navigate = useNavigate();
   const location = useLocation();
+  const { showTopbar } = useAppViewStore();
 
   // Fetch chats
   const {
@@ -50,6 +55,21 @@ export default function SideBar() {
 
   return (
     <section className="w-80 h-full flex flex-col gap-4">
+      {!showTopbar && (
+        <AppBar className="static! flex! flex-row! justify-between py-2! px-4">
+          <NavLink
+            to="/"
+            className="flex items-center justify-center gap-2 text-2xl font-bold"
+          >
+            Chat95
+            <img src={logo} className="size-10" />
+          </NavLink>
+          {/* <div className="flex justify-center gap-4 items-center">
+              <ChangeTheme />
+              <Settings />
+            </div> */}
+        </AppBar>
+      )}
       <Link to="/" className="flex-1">
         <Button className="w-full! h-10!">New Chat</Button>
       </Link>
@@ -89,6 +109,13 @@ export default function SideBar() {
             </MenuList>
           </ScrollArea>
         </GroupBox>
+      )}
+
+      {!showTopbar && (
+        <div className="flex -mb-10 gap-2">
+          <ChangeTheme />
+          <Settings />
+        </div>
       )}
 
       <p className="text-lg  text-center mt-10">

@@ -1,13 +1,22 @@
-// components/MarkdownWithCopy.tsx
-
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/github-dark.css"; // or any other theme
+import "highlight.js/styles/github-dark.css"; // or another theme
 
 import { useState } from "react";
 
-function CodeBlock({ children, className = "" }: any) {
+function CodeBlock({ inline, className, children }: any) {
   const [copied, setCopied] = useState(false);
+
+  // Inline code, just render as <code>
+  if (inline) {
+    return (
+      <code className="px-1 py-0.5 rounded bg-gray-200 dark:bg-gray-700 text-sm">
+        {children}
+      </code>
+    );
+  }
+
+  // Fenced block
   const language = className?.replace("language-", "") ?? "";
 
   const handleCopy = async () => {
@@ -22,9 +31,7 @@ function CodeBlock({ children, className = "" }: any) {
 
   return (
     <div className="relative group my-4">
-      <pre
-        className={`rounded-md p-4 overflow-x-auto bg-[#0d1117] text-sm text-white`}
-      >
+      <pre className="rounded-md p-4 overflow-x-auto bg-[#0d1117] text-sm text-white">
         <code className={`language-${language}`}>{children}</code>
       </pre>
       <button
@@ -42,9 +49,7 @@ export default function MarkdownWithCopy({ content }: { content: string }) {
     <ReactMarkdown
       rehypePlugins={[rehypeHighlight]}
       components={{
-        code(props) {
-          return <CodeBlock {...props} />;
-        },
+        code: CodeBlock,
       }}
     >
       {content}

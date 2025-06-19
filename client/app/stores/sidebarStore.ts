@@ -1,17 +1,21 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface SidebarStore {
-  isOpen: boolean;
-  setIsOpen: (value: boolean) => void;
+interface AppViewStore {
+  showSidebar: boolean;
+  showTopbar: boolean;
+  setShowSidebar: (value: boolean) => void;
+  setShowTopbar: (value: boolean) => void;
 }
 
-export const useSidebarStore = create<SidebarStore>()(
+export const useAppViewStore = create<AppViewStore>()(
   persist(
     (set) => ({
-      isOpen: true,
-      setIsOpen: (value) => set({ isOpen: value }),
+      showSidebar: true,
+      setShowSidebar: (value) => set({ showSidebar: value }),
+      showTopbar: true,
+      setShowTopbar: (value) => set({ showTopbar: value }),
     }),
-    { name: "sidebar-store" }
+    { name: "app-view-store" }
   )
 );

@@ -1,15 +1,8 @@
 import { NavLink } from "react-router";
-import {
-  AppBar,
-  Button,
-  MenuList,
-  MenuListItem,
-  Separator,
-  TextInput,
-  Toolbar,
-} from "react95";
+import { AppBar } from "react95";
 import ChangeTheme from "./change-theme";
 import logo from "@react95/icons/svg/Logo_32x32_4.svg";
+import Settings from "./settings";
 
 export default function TopBar() {
   return (
@@ -21,7 +14,10 @@ export default function TopBar() {
         Chat95
         <img src={logo} className="size-10" />
       </NavLink>
-      <ChangeTheme />
+      <div className="flex justify-center gap-4 items-center">
+        <ChangeTheme />
+        <Settings />
+      </div>
     </AppBar>
   );
 }

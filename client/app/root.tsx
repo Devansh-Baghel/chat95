@@ -21,7 +21,7 @@ import ms_sans_serif_bold from "react95/dist/fonts/ms_sans_serif_bold.woff2";
 import TopBar from "./components/topbar";
 import { useThemeStore } from "./stores/themeStore";
 import logo from "@react95/icons/svg/Logo_32x32_4.svg";
-import { useSidebarStore } from "./stores/sidebarStore";
+import { useAppViewStore } from "./stores/sidebarStore";
 import WelcomePage from "./components/welcome";
 import LoadingPage from "./components/loading";
 import { Toaster } from "react-hot-toast";
@@ -96,7 +96,7 @@ export default function App() {
   axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
   const { user, isLoading } = usePuterUser();
-  const { isOpen } = useSidebarStore();
+  const { showSidebar, showTopbar } = useAppViewStore();
 
   // Loading Progress Bar
   if (isLoading) return <LoadingPage />;
@@ -108,10 +108,10 @@ export default function App() {
       variant="outside"
       className="min-h-screen w-full p-3 flex! flex-col gap-3"
     >
-      {/* {isOpen && <TopBar />} */}
-      <TopBar />
+      {showTopbar && <TopBar />}
+      {/* <TopBar /> */}
       <div className="flex flex-1 overflow-hidden! gap-4">
-        {isOpen && <SideBar />}
+        {showSidebar && <SideBar />}
         <Outlet />
       </div>
       <Toaster />

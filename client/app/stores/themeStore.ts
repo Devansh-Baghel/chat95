@@ -11,7 +11,7 @@ interface ThemeStore {
 export const useThemeStore = create<ThemeStore>()(
   persist(
     (set) => ({
-      theme: allThemes.original,
+      theme: allThemes.aiee,
       setTheme: (theme) => set({ theme }),
     }),
     {
