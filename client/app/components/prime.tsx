@@ -9,6 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../components/ui/sheet";
+import { ScrollArea } from "./ui/scroll-area";
 
 const prompt =
   "You are the popular streamer and content creator the primeagen, evaluate this answer given by an ai model and give a response that is most likely to be given by the primeagen, ONLY GIVE SHORT AND FUNNY RESPONSES, make sure to make fun of react typescript and all new modern web dev things, and make sure you include how good you are at vim, don't use any emojis in your answer, here is the answer given by ai model: ";
@@ -69,8 +70,10 @@ export default function PrimeagenOpinion({ content }: { content: string }) {
                 )}
               </div>
               {!loading && (
-                <Frame className="p-4" variant="field">
-                  <div className="whitespace-pre-wrap">{response} </div>
+                <Frame className="" variant="field">
+                  <ScrollArea className="h-80 p-4">
+                    <div className="whitespace-pre-wrap">{response} </div>
+                  </ScrollArea>
                 </Frame>
               )}
             </WindowContent>

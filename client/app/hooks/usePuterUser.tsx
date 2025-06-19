@@ -13,6 +13,7 @@ interface PuterUserContextType {
   user: PuterUser | null;
   setUser: React.Dispatch<React.SetStateAction<PuterUser | null>>;
   signInWithPuter: () => Promise<void>;
+  signOut: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -20,6 +21,7 @@ const PuterUserContext = createContext<PuterUserContextType>({
   user: null,
   setUser: () => {},
   signInWithPuter: async () => {},
+  signOut: async () => {},
   isLoading: true,
 });
 
@@ -28,7 +30,7 @@ export function PuterUserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<PuterUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Restore from localStorage (on client)
+  // Restore from localStorage
   useLayoutEffect(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("puterUser");
@@ -42,7 +44,7 @@ export function PuterUserProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Check auth status when puter is ready
+  // Check auth status
   useEffect(() => {
     if (!puter) return;
 
@@ -83,9 +85,22 @@ export function PuterUserProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signOut = async () => {
+    setIsLoading(true);
+    try {
+      await puter.auth.signOut();
+      setUser(null);
+      localStorage.removeItem("puterUser");
+    } catch (error) {
+      console.error("Failed to sign out from Puter:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <PuterUserContext.Provider
-      value={{ user, setUser, signInWithPuter, isLoading }}
+      value={{ user, setUser, signInWithPuter, signOut, isLoading }}
     >
       {children}
     </PuterUserContext.Provider>

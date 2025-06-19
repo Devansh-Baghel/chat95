@@ -17,7 +17,7 @@ export type ChatTypes = {
 };
 
 export default function SideBar() {
-  const { user } = usePuterUser();
+  const { user, signOut } = usePuterUser();
   const navigate = useNavigate();
   const location = useLocation();
   const { showTopbar } = useAppViewStore();
@@ -68,6 +68,7 @@ export default function SideBar() {
               <ChangeTheme />
               <Settings />
             </div> */}
+          <Button onClick={signOut}>Logout</Button>
         </AppBar>
       )}
       <Link to="/" className="flex-1">
@@ -112,13 +113,15 @@ export default function SideBar() {
       )}
 
       {!showTopbar && (
-        <div className="flex -mb-10 gap-2">
+        <div className="flex gap-2">
           <ChangeTheme />
           <Settings />
         </div>
       )}
 
-      <p className="text-lg  text-center mt-10">
+      {showTopbar && <Button onClick={signOut}>Logout</Button>}
+
+      <p className="text-lg text-center">
         made by{" "}
         <a
           href="https://baghel.dev"

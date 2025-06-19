@@ -11,6 +11,7 @@
 - [x] add little settings option to toggle topbar
 - [x] copy code feature
 - [x] fix open/close sidebar button overlay on chat text
+- [x] logout
 - [ ] branch off conversation feature
 - [ ] add auto animate
 - [ ] add feature to display the chat history like "Today" "Yesterday" "Last 7 days" etc
