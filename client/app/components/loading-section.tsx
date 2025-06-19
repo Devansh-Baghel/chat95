@@ -17,7 +17,7 @@ export default function LoadingSection({ image }: { image?: boolean }) {
       </span> */}
 
       {image ? (
-        <span className="text-xl">Generating image...</span>
+        <span className="text-xl ml-2">Generating image...</span>
       ) : (
         <span className="text-2xl">Loading...</span>
       )}

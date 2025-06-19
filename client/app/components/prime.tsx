@@ -26,7 +26,7 @@ export default function PrimeagenOpinion({ content }: { content: string }) {
       const resp = await puter.ai.chat(prompt + content, {
         model: "gpt-4o-mini",
         stream: true,
-        testMode: true,
+        testMode: import.meta.env.VITE_TEST_MODE,
       });
 
       for await (const chunk of resp) {

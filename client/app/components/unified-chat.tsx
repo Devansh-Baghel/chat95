@@ -90,7 +90,7 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
           const stream = await puter.ai.chat(newChatQuery, {
             stream: true,
             model,
-            testMode: true,
+            testMode: import.meta.env.VITE_TEST_MODE === "true",
           });
 
           for await (const chunk of stream) {
@@ -153,7 +153,7 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
       const stream = await puter.ai.chat(messages, {
         stream: true,
         model,
-        testMode: true,
+        testMode: import.meta.env.VITE_TEST_MODE === "true",
       });
 
       let fullResponse = "";
@@ -234,7 +234,10 @@ export default function UnifiedChat({ chatId }: { chatId: string }) {
     setIsGeneratingImage(true);
 
     try {
-      const img = await puter.ai.txt2img(query, true);
+      const img = await puter.ai.txt2img(
+        query,
+        import.meta.env.VITE_TEST_MODE === "true"
+      );
       setGeneratedImage(img.src);
 
       // Save the generated image as a message in DB
